@@ -1,0 +1,22 @@
+Reference Indexing
+IDX=~/refs/Homo_sapiens.GRCh38.dna.primary_assembly.fa
+rsem-prepare-reference --gtf $GTF \
+    -p 64 \
+    --star \
+    $IDX \
+
+Paired-End Alignment
+rsem-calculate-expression --paired-end \
+    --star \
+    --star-gzipped-read-file \
+    --no-bam-output \
+    -p 128 \
+    ./fastq/{}_1.fastq.gz \
+    ./fastq/{}_2.fastq.gz \
+    ~/refs/ensembl_rsem \
+    rsem/{}"
+
+{} refers to the name of the fastq file
+
+Exact parameters of the STAR aligner according to ENCODE’s STAR-RSEM pipeline
+STAR --genomeDir home/refs  --outSAMunmapped Within  --outFilterType BySJout  --outSAMattributes NH HI AS NM MD  --outFilterMultimapNmax 20  --outFilterMismatchNmax 999  --outFilterMismatchNoverLmax 0.04  --alignIntronMin 20  --alignIntronMax 1000000  --alignMatesGapMax 1000000  --alignSJoverhangMin 8  --alignSJDBoverhangMin 1  --sjdbScore 1  --runThreadN 128  --genomeLoad NoSharedMemory  --outSAMtype BAM Unsorted  --quantMode TranscriptomeSAM  --outSAMheaderHD @HD VN:1.4 SO:unsorted  --outFileNamePrefix rsem/{}.temp  --readFilesCommand zcat  --readFilesIn ./fastq/{}.gz ./fastq/{}_2.fastq.gz
